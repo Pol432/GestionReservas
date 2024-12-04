@@ -29,9 +29,8 @@ public class Main {
     private static void inicializarDatosPredeterminados() {
         // Crear equipos
         equipos.add(new Equipo("Osciloscopio", "Disponible", new Date()));
-        equipos.add(new Equipo("Fuente de voltaje", "Dañado", new Date()));
-        equipos.add(new Equipo("Generador de onda", "Disponible", new Date()));
-        equipos.add(new EquipoMedicion("E0102", "Multimetro", "Dañado", false, new Date(), new Date(), 5));
+        equipos.add(new Equipo("Fuente de voltaje", "Requiere mantenimiento", new Date()));
+        equipos.add(new Equipo("Generador de onda", "Requiere mantenimiento", new Date()));
 
         // Crear usuarios
         Estudiante estudiante1 = new Estudiante("1234567890", "Paul Rosero",
@@ -111,7 +110,7 @@ public class Main {
         // Mostrar equipos que requieren mantenimiento
         System.out.println("Equipos que requieren mantenimiento:");
         equipos.stream()
-                .filter(e -> Objects.equals(e.getEstado(), "Dañado"))
+                .filter(e -> Objects.equals(e.getEstado(), "Requiere mantenimiento"))
                 .forEach(e -> System.out.println(e.getNombre()));
 
         System.out.print("Seleccione un equipo para mantenimiento: ");

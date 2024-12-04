@@ -2,7 +2,7 @@ public class CabeceraReserva {
     private String universidad;
     private String carrera;
     private String nombreSolicitante;
-    private String fecha;
+    private String fecha;//poner tambine fecha de devolucion
     private int numeroReserva; // Número único generado automáticamente
     private static int contadorReservas = 0; // Contador de reservas global
     private DetalleReserva detalleReserva;
@@ -79,4 +79,6 @@ public class CabeceraReserva {
                 ", Nombre del Equipo=" + equipo.getNombre() +
                 '}';
     }
+
+
 }
