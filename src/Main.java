@@ -1,210 +1,132 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 
 public class Main {
     private static List<Equipo> equipos = new ArrayList<>();
+    private static List<Usuario> usuarios = new ArrayList<>();
     private static List<CabeceraReserva> reservas = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // Configuración inicial de equipos
-        equipos.add(new EquipoMicroprocesador("E001", "Laptop Dell", "Disponible", false, new Date(2323223232L), 8, "Intel i5", "Intel Core i5"));
-        equipos.add(new EquipoMedicion("E002", "Proyector Epson", "Disponible", false, new Date(2323223232L), new Date(2323223232L), 12));
-        equipos.add(new Equipo("E003", "Microscopio", new Date(2323223232L)));
+        inicializarDatosPredeterminados();
 
-        // Configuración GUI
-        JFrame win = new JFrame();
-        win.setTitle("Gestión de Equipos");
-        win.setSize(1000, 600);
-        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        System.out.println("Sistema de Gestión de Equipos");
 
-        // Creación de usuarios
-        Estudiante estudiante1 = new Estudiante("1234567890", "Paul Rosero", "pmrosero@gmail.com", "Quito", "1234", "0987654321", "Electrónica", 3);
-        Administrador administrador1 = new Administrador("0987654321", "David Iza", "david.iza@udla.ec", "Ambato", "5678", "1234567890");
+        Usuario usuarioActual = iniciarSesion();
+        if (usuarioActual == null) {
+            System.out.println("Inicio de sesión fallido.");
+            return;
+        }
 
-        // Panel de login
-        JPanel loginPanel = new JPanel(new GridLayout(3, 2));
-        JTextField correoField = new JTextField();
-        JPasswordField claveField = new JPasswordField();
-        JButton loginButton = new JButton("Iniciar Sesión");
-
-        loginPanel.add(new JLabel("Correo:"));
-        loginPanel.add(correoField);
-        loginPanel.add(new JLabel("Contraseña:"));
-        loginPanel.add(claveField);
-        loginPanel.add(loginButton);
-
-        win.add(loginPanel);
-        win.setVisible(true);
-
-        loginButton.addActionListener(e -> {
-            String correo = correoField.getText();
-            String clave = new String(claveField.getPassword());
-
-            Usuario usuarioActual = null;
-            if (estudiante1.getCorreo().equals(correo) && estudiante1.getClave().equals(clave)) {
-                usuarioActual = estudiante1;
-                mostrarPanelEstudiante(win, (Estudiante) usuarioActual);
-            } else if (administrador1.getCorreo().equals(correo) && administrador1.getClave().equals(clave)) {
-                usuarioActual = administrador1;
-                mostrarPanelAdministrador(win, (Administrador) usuarioActual);
-            } else {
-                JOptionPane.showMessageDialog(win, "Credenciales inválidas");
-            }
-        });
+        if (usuarioActual instanceof Estudiante) {
+            menuEstudiante((Estudiante) usuarioActual);
+        } else if (usuarioActual instanceof Administrador) {
+            menuAdministrador((Administrador) usuarioActual);
+        }
     }
 
-    private static void mostrarPanelEstudiante(JFrame win, Estudiante estudiante) {
-        win.getContentPane().removeAll();
-        JPanel panelEstudiante = new JPanel(new BorderLayout());
+    private static void inicializarDatosPredeterminados() {
+        // Crear equipos
+        equipos.add(new Equipo("Osciloscopio", "Disponible", new Date()));
+        equipos.add(new Equipo("Fuente de voltaje", "Dañado", new Date()));
+        equipos.add(new Equipo("Generador de onda", "Disponible", new Date()));
+        equipos.add(new EquipoMedicion("E0102", "Multimetro", "Dañado", false, new Date(), new Date(), 5));
 
-        // Panel de Reservas Actuales
-        JTable tablaReservas = new JTable(new DefaultTableModel(
-                new String[]{"Número", "Equipo", "Fecha", "Duración (días)"}, 0
-        ));
+        // Crear usuarios
+        Estudiante estudiante1 = new Estudiante("1234567890", "Paul Rosero",
+                "pmrosero@gmail.com", "Quito", "1234", "0987654321", "Electrónica", 3);
+        Administrador administrador1 = new Administrador("0987654321", "David Iza",
+                "david.iza@udla.ec", "Ambato", "5678", "1234567890");
 
+        usuarios.add(estudiante1);
+        usuarios.add(administrador1);
+
+        // Crear algunas reservas de ejemplo
+        CabeceraReserva reserva1 = new CabeceraReserva("UDLA", "Electrónica",
+                estudiante1.getNombre(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        reserva1.setEquipo(equipos.getFirst());
+        equipos.getFirst().setPrestado(true);
+        reservas.add(reserva1);
+    }
+
+    private static Usuario iniciarSesion() {
+        System.out.print("Ingrese su correo electrónico: ");
+        String correo = scanner.nextLine();
+        System.out.print("Ingrese su contraseña: ");
+        String clave = scanner.nextLine();
+
+        return usuarios.stream()
+                .filter(u -> u.getCorreo().equals(correo) && u.getClave().equals(clave))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static void menuEstudiante(Estudiante estudiante) {
+        System.out.println("\n--- Menú Estudiante ---");
+
+        // Mostrar reservas previas
+        System.out.println("Reservas anteriores:");
         reservas.stream()
-                .filter(r -> r.getUsuario().equals(estudiante))
-                .forEach(r -> {
-                    DefaultTableModel model = (DefaultTableModel) tablaReservas.getModel();
-                    model.addRow(new Object[]{
-                            r.getNumeroReserva(),
-                            r.getEquipo().getNombre(),
-                            r.getFecha()
-                    });
-                });
-        JScrollPane scrollReservas = new JScrollPane(tablaReservas);
-        panelEstudiante.add(scrollReservas, BorderLayout.NORTH);
+                .filter(r -> r.getNombreSolicitante().equals(estudiante.getNombre()))
+                .forEach(System.out::println);
 
-        // Panel de Nueva Reserva
-        JPanel nuevaReservaPanel = new JPanel(new GridLayout(4, 2));
-        JComboBox<String> equipoComboBox = new JComboBox<>(
-                equipos.stream()
-                        .filter(equipo -> !equipo.isPrestado())
-                        .map(Equipo::getNombre)
-                        .toArray(String[]::new)
-        );
-        JTextField duracionField = new JTextField();
-        JComboBox<String> laboratorioComboBox = new JComboBox<>(new String[]{"Electrónica", "Automatización", "Robótica"});
-        JTextField horarioField = new JTextField();
-        JTextField ocupantesField = new JTextField();
-        JButton reservarButton = new JButton("Realizar Reserva");
+        // Realizar nueva reserva
+        System.out.println("\nRealizar nueva reserva:");
+        equipos.stream()
+                .filter(e -> !e.isPrestado())
+                .forEach(e -> System.out.println(e.getNombre()));
 
-        nuevaReservaPanel.add(new JLabel("Equipo:"));
-        nuevaReservaPanel.add(equipoComboBox);
-        nuevaReservaPanel.add(new JLabel("Duración (días):"));
-        nuevaReservaPanel.add(duracionField);
-        nuevaReservaPanel.add(new JLabel("Laboratorio:"));
-        nuevaReservaPanel.add(laboratorioComboBox);
-        nuevaReservaPanel.add(new JLabel("Horario:"));
-        nuevaReservaPanel.add(horarioField);
-        nuevaReservaPanel.add(new JLabel("Número de Ocupantes:"));
-        nuevaReservaPanel.add(ocupantesField);
-        nuevaReservaPanel.add(new JLabel(""));
-        nuevaReservaPanel.add(reservarButton);
+        System.out.print("Seleccione un equipo: ");
+        String equipoNombre = scanner.nextLine();
 
-        panelEstudiante.add(nuevaReservaPanel, BorderLayout.CENTER);
+        Equipo equipoSeleccionado = equipos.stream()
+                .filter(e -> e.getNombre().equals(equipoNombre) && !e.isPrestado())
+                .findFirst()
+                .orElse(null);
 
-        reservarButton.addActionListener(e -> {
-            String equipoSeleccionado = (String) equipoComboBox.getSelectedItem();
-            int duracion;
-            try {
-                duracion = Integer.parseInt(duracionField.getText());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(win, "Duración inválida");
-                return;
-            }
-            String laboratorioSeleccionado = (String) laboratorioComboBox.getSelectedItem();
-            String horario = horarioField.getText();
-            int ocupantes;
-            try {
-                ocupantes = Integer.parseInt(ocupantesField.getText());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(win, "Número de ocupantes inválido");
-                return;
-            }
-
-            Equipo equipo = equipos.stream()
-                    .filter(eq -> eq.getNombre().equals(equipoSeleccionado))
-                    .findFirst()
-                    .orElse(null);
-
-            if (equipo != null && !equipo.isPrestado()) {
-                CabeceraReserva nuevaReserva = new CabeceraReserva("UDLA", estudiante.getCarrera(), estudiante.getNombre(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                DetalleReserva detalleReserva = new DetalleReserva(horario, laboratorioSeleccionado, ocupantes);
-                reservas.add(nuevaReserva);
-                equipo.setPrestado(true);
-                JOptionPane.showMessageDialog(win, "Reserva realizada con éxito");
-            } else {
-                JOptionPane.showMessageDialog(win, "El equipo seleccionado no está disponible");
-            }
-        });
-
-        win.add(panelEstudiante);
-        win.revalidate();
-        win.repaint();
+        if (equipoSeleccionado != null) {
+            CabeceraReserva nuevaReserva = new CabeceraReserva(
+                    "UDLA",
+                    estudiante.getCarrera(),
+                    estudiante.getNombre(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            );
+            nuevaReserva.setEquipo(equipoSeleccionado);
+            reservas.add(nuevaReserva);
+            equipoSeleccionado.setPrestado(true);
+            System.out.println("Reserva realizada con éxito.");
+            System.out.println("Lista de reservas: ");
+            reservas.stream()
+                    .filter(r -> r.getNombreSolicitante().equals(estudiante.getNombre()))
+                    .forEach(System.out::println);
+        } else {
+            System.out.println("Equipo no disponible.");
+        }
     }
 
+    private static void menuAdministrador(Administrador administrador) {
+        System.out.println("\n--- Menú Administrador ---");
 
-    private static void mostrarPanelAdministrador(JFrame win, Administrador administrador) {
-        win.getContentPane().removeAll();
-        JPanel panelAdministrador = new JPanel(new BorderLayout());
+        // Mostrar equipos que requieren mantenimiento
+        System.out.println("Equipos que requieren mantenimiento:");
+        equipos.stream()
+                .filter(e -> Objects.equals(e.getEstado(), "Dañado"))
+                .forEach(e -> System.out.println(e.getNombre()));
 
-        // Panel de Equipos que Requieren Mantenimiento
-        JTable tablaEquipos = new JTable(new DefaultTableModel(
-                new String[]{"Equipo", "Requiere Mantenimiento Correctivo", "Requiere Mantenimiento Preventivo"}, 0
-        ));
-        equipos.forEach(equipo -> {
-            DefaultTableModel model = (DefaultTableModel) tablaEquipos.getModel();
-            model.addRow(new Object[]{equipo.getNombre(), equipo.requiereMantenimientoCorrectivo(), equipo.requiereMantenimientoPreventivo()});
-        });
+        System.out.print("Seleccione un equipo para mantenimiento: ");
+        String equipoNombre = scanner.nextLine();
 
-        JScrollPane scrollEquipos = new JScrollPane(tablaEquipos);
-        panelAdministrador.add(scrollEquipos, BorderLayout.NORTH);
+        Equipo equipoSeleccionado = equipos.stream()
+                .filter(e -> e.getNombre().equals(equipoNombre))
+                .findFirst()
+                .orElse(null);
 
-        // Panel de Mantenimiento
-        JPanel mantenimientoPanel = new JPanel(new GridLayout(2, 2));
-        JComboBox<String> equipoMantenimientoComboBox = new JComboBox<>(
-                equipos.stream()
-                        .filter(equipo -> equipo.requiereMantenimientoCorrectivo() || equipo.requiereMantenimientoPreventivo())
-                        .map(Equipo::getNombre)
-                        .toArray(String[]::new)
-        );
-        JButton realizarMantenimientoButton = new JButton("Realizar Mantenimiento");
-
-        mantenimientoPanel.add(new JLabel("Equipo para Mantenimiento:"));
-        mantenimientoPanel.add(equipoMantenimientoComboBox);
-        mantenimientoPanel.add(new JLabel(""));
-        mantenimientoPanel.add(realizarMantenimientoButton);
-
-        panelAdministrador.add(mantenimientoPanel, BorderLayout.CENTER);
-
-        realizarMantenimientoButton.addActionListener(e -> {
-            String equipoSeleccionado = (String) equipoMantenimientoComboBox.getSelectedItem();
-            Equipo equipo = equipos.stream()
-                    .filter(eq -> eq.getNombre().equals(equipoSeleccionado))
-                    .findFirst()
-                    .orElse(null);
-
-            if (equipo != null) {
-                administrador.realizarMantenimiento(equipo);
-                JOptionPane.showMessageDialog(win, "Mantenimiento realizado con éxito");
-                // Actualizar tabla de equipos
-                ((DefaultTableModel)tablaEquipos.getModel()).setRowCount(0);
-                equipos.forEach(eq -> {
-                    DefaultTableModel model = (DefaultTableModel) tablaEquipos.getModel();
-                    model.addRow(new Object[]{eq.getNombre(), eq.requiereMantenimientoCorrectivo(), eq.requiereMantenimientoPreventivo()});
-                });
-            }
-        });
-
-        win.add(panelAdministrador);
-        win.revalidate();
-        win.repaint();
+        if (equipoSeleccionado != null && "Dañado".equals(equipoSeleccionado.getEstado())) {
+            equipoSeleccionado.setEstado("Arreglado");
+            System.out.println("Mantenimiento realizado con éxito.");
+        } else {
+            System.out.println("Equipo no válido para mantenimiento.");
+        }
     }
 }

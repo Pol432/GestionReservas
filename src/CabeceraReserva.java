@@ -71,12 +71,12 @@ public class CabeceraReserva {
 
     @Override
     public String toString() {
-        return "EncabezadoReserva{" +
-                "universidad='" + universidad + '\'' +
+        return "Reserva{" +
+                "Nombre del solicitante='" + nombreSolicitante + '\'' +
                 ", carrera='" + carrera + '\'' +
-                ", nombreSolicitante='" + nombreSolicitante + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", numeroReserva=" + numeroReserva +
+                ", Nombre del Equipo=" + equipo.getNombre() +
                 '}';
     }
 }
