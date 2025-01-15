@@ -4,11 +4,16 @@ public class Administrador extends Usuario {
         super(cedula, nombre, correo, direccion, clave, telefono);
     }
 
-    public boolean realizarMantenimiento(Equipo equipo) {
-        if ("Dañado".equals(equipo.getEstado())) {
-            equipo.setEstado("Arreglado");
-            return true;
+    public void realizarMantenimiento(Equipo equipo, String tipoMantenimiento, String fechaMantenimiento) {
+        if ("Correctivo".equalsIgnoreCase(tipoMantenimiento)) {
+            equipo.setEstado("Operativo");
+            equipo.setFechaMantenimientoCorrectivo(fechaMantenimiento);
+        } else if ("Preventivo".equalsIgnoreCase(tipoMantenimiento)) {
+            equipo.setEstado("Operativo");
+            equipo.setFechaMantenimientoPreventivo(fechaMantenimiento);
+        } else {
+            throw new IllegalArgumentException("Tipo de mantenimiento no válido");
         }
-        return false;
     }
+
 }

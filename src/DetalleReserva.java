@@ -1,69 +1,44 @@
+import java.time.LocalDate;
+
 public class DetalleReserva {
-    private String horario;
-    private String laboratorioReservado; // Puede ser "Electrónica", "Automatización" o "Robótica"
-    private int numeroOcupantes;
-    private static int reservasElectronica = 0;
-    private static int reservasAutomatizacion = 0;
-    private static int reservasRobotica = 0;
+    private static int contadorReservas = 0; // Contador de reservas global
+    private int numeroReserva;
+    private LocalDate fecha;
+    private Usuario usuario;
 
     // Constructor
-    public DetalleReserva(String horario, String laboratorioReservado, int numeroOcupantes) {
-        this.horario = horario;
-        this.laboratorioReservado = laboratorioReservado;
-        this.numeroOcupantes = numeroOcupantes;
-        registrarReserva(laboratorioReservado);
+    public DetalleReserva(LocalDate fecha, Usuario usuario) {
+        this.fecha = fecha;
+        this.usuario = usuario;
+        this.numeroReserva = generarNumeroReserva();
     }
 
-    // Método para registrar una reserva en el laboratorio correspondiente
-    private void registrarReserva(String laboratorioReservado) {
-        switch (laboratorioReservado.toLowerCase()) {
-            case "electrónica":
-                reservasElectronica++;
-                break;
-            case "automatización":
-                reservasAutomatizacion++;
-                break;
-            case "robótica":
-                reservasRobotica++;
-                break;
-            default:
-                System.out.println("Laboratorio no válido");
-                break;
-        }
+    public static int getContadorReservas() {
+        return contadorReservas;
     }
 
-    // Métodos para obtener el número de reservas por laboratorio
-    public static int getReservasElectronica() {
-        return reservasElectronica;
+    private int generarNumeroReserva() {
+        contadorReservas++;
+        return contadorReservas;
     }
 
-    public static int getReservasAutomatizacion() {
-        return reservasAutomatizacion;
+    public int getNumeroReserva() {
+        return numeroReserva;
     }
 
-    public static int getReservasRobotica() {
-        return reservasRobotica;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
-    // Getters
-    public String getHorario() {
-        return horario;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
-    public String getLaboratorioReservado() {
-        return laboratorioReservado;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public int getNumeroOcupantes() {
-        return numeroOcupantes;
-    }
-
-    @Override
-    public String toString() {
-        return "DetalleReserva{" +
-                "horario='" + horario + '\'' +
-                ", laboratorioReservado='" + laboratorioReservado + '\'' +
-                ", numeroOcupantes=" + numeroOcupantes +
-                '}';
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
