@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 public class RegistroMantenimiento {
     private String equipo;
     private String tipoMantenimiento;

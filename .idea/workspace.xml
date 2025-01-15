@@ -5,19 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b5910f6-f6b9-478b-879f-59e37d6262c9" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DetalleReservaEquipo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DetalleReservaLaboratorio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RegistroMantenimiento.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GestionReservas.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GestionReservas.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Administrador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CabeceraReserva.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DetalleReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DetalleReserva.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Equipo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Estudiante.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DetalleReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReserva.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DetalleReservaEquipo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReservaEquipo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DetalleReservaLaboratorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReservaLaboratorio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Equipo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EquipoMedicion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EquipoMicroprocesador.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/MainGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RegistroMantenimiento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/RegistroMantenimiento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Usuario.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,10 +63,11 @@
   "keyToString": {
     "Application.MainGUI.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "test",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/David Iza/GestionReservas/GestionReservas",
+    "last_opened_file_path": "/home/pol/UDLA/Prog/GestionReservas/lib/jcalendar-1.4.jar",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
@@ -97,7 +98,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736734600903</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary=".">
+      <option name="closed" value="true" />
+      <created>1736977960991</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1736977960991</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

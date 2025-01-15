@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 import java.time.LocalDate;
 
 public class DetalleReservaEquipo extends DetalleReserva {
@@ -28,7 +30,7 @@ public class DetalleReservaEquipo extends DetalleReserva {
 
     @Override
     public String toString() {
-        return "DetalleReserva{" +
+        return "ReservasManagement.DetalleReserva{" +
                 ", usuario=" + super.getUsuario().getNombre() +
                 ", duración (días)=" + duracion +
                 ", equipoReservado='" + this.equipo.getNombre() + '\'' +

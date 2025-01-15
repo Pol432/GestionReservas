@@ -1,12 +1,17 @@
+package AppMain;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
+
+import ReservasManagement.Administrador;
+import ReservasManagement.Estudiante;
+import ReservasManagement.Usuario;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.SpinnerDateModel;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -14,27 +19,10 @@ public class MainGUI {
     private static JTextField correoField;
     private static JPasswordField claveField;
     private static JButton loginButton;
-    private static List<Equipo> equipos = new ArrayList<>();
-    private static List<DetalleReserva> reservas = new ArrayList<>();
-    private static List<Estudiante> estudiantes = new ArrayList<>();
-    private static List<Administrador> administradores = new ArrayList<>();
-    private static List<RegistroMantenimiento> historialMantenimientos = new ArrayList<>();
+    private static App app = new App();
 
 
     public static void main(String[] args) {
-        // Configuración inicial
-        equipos.add(new Equipo("Osciloscopio", "Disponible", new Date()));
-        equipos.add(new Equipo("Fuente de voltaje", "Requiere mantenimiento", new Date()));
-        equipos.add(new Equipo("Generador de onda", "Requiere mantenimiento", new Date()));
-
-
-        // Crear usuarios de prueba
-        Estudiante estudiante1 = new Estudiante("1234567890", "Paul Rosero", "pmrosero@gmail.com", "Quito", "1234", "0987654321", "Electrónica", 3);
-        Administrador administrador1 = new Administrador("0987654321", "David Iza", "david.iza@udla.ec", "Ambato", "5678", "1234567890");
-
-        estudiantes.add(estudiante1);
-        administradores.add(administrador1);
-
         // Configuración GUI
         JFrame win = new JFrame();
         win.setTitle("Gestión de Equipos");
@@ -43,7 +31,7 @@ public class MainGUI {
         win.setVisible(true); // Asegurar que la ventana se muestre
 
         // Mostrar panel de login
-        mostrarPanelLogin(win, estudiante1, administrador1);
+        mostrarPanelLogin(win);
     }
 
 
@@ -91,56 +79,25 @@ public class MainGUI {
             String ciudad = ciudadField.getText();
             String tipoUsuario = (String) tipoUsuarioBox.getSelectedItem();
 
-            if (cedula.isEmpty() || nombre.isEmpty() || correo.isEmpty() || clave.isEmpty() || telefono.isEmpty() || ciudad.isEmpty()) {
-                JOptionPane.showMessageDialog(win, "Por favor, complete todos los campos.");
-                return;
-            }
-
-            if (!new Usuario(null, null, null, null, null, null).validarcedula(cedula)) {
-                JOptionPane.showMessageDialog(win, "Cédula inválida. Debe tener 10 caracteres numéricos.");
-                return;
-            }
-
-            if (!Usuario.validarCorreo(correo)) {
-                JOptionPane.showMessageDialog(win, "Correo electrónico inválido.");
-                return;
-            }
-
-            // Validar que la cédula y el correo no existan ya
-            boolean cedulaExiste = estudiantes.stream().anyMatch(eu -> eu.getCedula().equals(cedula)) ||
-                    administradores.stream().anyMatch(ad -> ad.getCedula().equals(cedula));
-
-            boolean correoExiste = estudiantes.stream().anyMatch(eu -> eu.getCorreo().equals(correo)) ||
-                    administradores.stream().anyMatch(ad -> ad.getCorreo().equals(correo));
-
-            if (cedulaExiste) {
-                JOptionPane.showMessageDialog(win, "La cédula ya está registrada.");
-                return;
-            }
-
-            if (correoExiste) {
-                JOptionPane.showMessageDialog(win, "El correo ya está registrado.");
-                return;
+            try {
+                app.agregarUsuario(cedula, nombre, correo, clave, telefono, ciudad, tipoUsuario);
+            } catch (Exception msg) {
+                JOptionPane.showMessageDialog(win, msg);
             }
 
             assert tipoUsuario != null;
-            if (tipoUsuario.equals("Estudiante")) {
-                Estudiante nuevoEstudiante = new Estudiante(cedula, nombre, correo, ciudad, clave, telefono, "Carrera", 1);
-                estudiantes.add(nuevoEstudiante);
+            if (tipoUsuario.equals("Estudiante"))
                 JOptionPane.showMessageDialog(win, "Estudiante registrado con éxito.");
-            } else {
-                Administrador nuevoAdministrador = new Administrador(cedula, nombre, correo, ciudad, clave, telefono);
-                administradores.add(nuevoAdministrador);
+            else
                 JOptionPane.showMessageDialog(win, "Administrador registrado con éxito.");
-            }
         });
 
-        regresarButton.addActionListener(e -> mostrarPanelLogin(win, null, null)); // Regresar al login
+        regresarButton.addActionListener(e -> mostrarPanelLogin(win)); // Regresar al login
     }
 
 
 
-    private static void mostrarPanelLogin(JFrame win, Estudiante dummyEstudiante, Administrador dummyAdministrador) {
+    private static void mostrarPanelLogin(JFrame win) {
         win.getContentPane().removeAll();
 
         JPanel loginPanel = new JPanel(new GridLayout(3, 2));
@@ -164,27 +121,21 @@ public class MainGUI {
             String correo = correoField.getText();
             String clave = new String(claveField.getPassword());
 
-            // Validar credenciales en estudiantes
-            for (Estudiante estudiante : estudiantes) {
-                if (estudiante.getCorreo().equals(correo) && estudiante.getClave().equals(clave)) {
-                    mostrarPanelEstudiante(win, estudiante);
-                    return;
-                }
+            try {
+                Usuario u1 = app.ingresarUsuario(correo, clave);
+                if (u1 instanceof Estudiante)
+                    mostrarPanelEstudiante(win, (Estudiante) u1);
+                else
+                    mostrarPanelAdministrador(win, (Administrador) u1);
+            } catch (Exception msg) {
+                JOptionPane.showMessageDialog(win, msg);
             }
-
-            // Validar credenciales en administradores
-            for (Administrador administrador : administradores) {
-                if (administrador.getCorreo().equals(correo) && administrador.getClave().equals(clave)) {
-                    mostrarPanelAdministrador(win, administrador);
-                    return;
-                }
-            }
-
-            JOptionPane.showMessageDialog(win, "Credenciales inválidas.");
         });
 
         botonRegistro.addActionListener(e -> mostrarFormularioRegistro(win));
     }
+
+
     private static void mostrarPanelEstudiante(JFrame win, Estudiante estudiante) {
         win.getContentPane().removeAll();
         JPanel panelEstudiante = new JPanel(new BorderLayout());
@@ -237,7 +188,7 @@ public class MainGUI {
         panelReservaLab.add(new JLabel(""));
         panelReservaLab.add(reservarLabButton);
 
-        // === Panel de Reserva de Equipo ===
+        // === Panel de Reserva de ReservasManagement.Equipo ===
         JPanel panelReservaEquipo = new JPanel(new GridLayout(0, 4, 10, 10));
 
         JComboBox<String> equipoComboBox = new JComboBox<>(equipos.stream()
@@ -388,23 +339,6 @@ public class MainGUI {
             });
         }
     }
-
-    private static void mostrarVentanaPrincipal(JFrame win, JTextField correoField, JPasswordField claveField, JButton loginButton) {
-        win.getContentPane().removeAll();
-        JPanel loginPanel = new JPanel(new GridLayout(3, 2));
-
-        loginPanel.add(new JLabel("Correo:"));
-        loginPanel.add(correoField);
-        loginPanel.add(new JLabel("Contraseña:"));
-        loginPanel.add(claveField);
-        loginPanel.add(new JLabel(""));
-        loginPanel.add(loginButton);
-
-        win.add(loginPanel);
-        win.revalidate();
-        win.repaint();
-    }
-
 
     private static void mostrarPanelAdministrador(JFrame win, Administrador administrador) {
         // Limpia el contenido del JFrame

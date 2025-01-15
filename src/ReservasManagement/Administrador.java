@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 public class Administrador extends Usuario {
 
     public Administrador(String cedula, String nombre, String correo, String direccion, String clave, String telefono) {

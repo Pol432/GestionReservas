@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -84,7 +86,7 @@ public class DetalleReservaLaboratorio extends DetalleReserva{
 
     @Override
     public String toString() {
-        return "DetalleReserva{" +
+        return "ReservasManagement.DetalleReserva{" +
                 ", horaInicio=" + horaInicio +
                 ", horaFin=" + horaFin +
                 ", laboratorioReservado='" + laboratorioReservado + '\'' +

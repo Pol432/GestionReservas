@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -10,7 +12,6 @@ public class Usuario {
     private String direccion;
     private String clave;
     private String telefono;
-    private static List<DetalleReserva> reservasTotales = new ArrayList<>();
 
     public Usuario(String cedula, String nombre, String correo, String direccion, String clave, String telefono) {
         this.cedula = cedula;
@@ -65,7 +66,7 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public boolean validarcedula(String cedula) {
+    public static boolean validarcedula(String cedula) {
         // Validar que la cédula tenga exactamente 10 caracteres
         if (cedula == null || cedula.length() != 10) {
             return false;
@@ -82,30 +83,6 @@ public class Usuario {
         Pattern pattern = Pattern.compile(regex);
         // Verificar si el correo coincide con la expresión regular
         return correo != null && pattern.matcher(correo).matches();
-    }
-
-    public List<DetalleReservaEquipo> getAllReservasEquipo() {
-        return reservasTotales.stream()
-                .filter(reserva -> reserva instanceof DetalleReservaEquipo)
-                .map(reserva -> (DetalleReservaEquipo) reserva)
-                .collect(Collectors.toList());
-    }
-
-    public List<DetalleReservaLaboratorio> getAllReservasLaboratorio() {
-        return reservasTotales.stream()
-                .filter(reserva -> reserva instanceof DetalleReservaLaboratorio)
-                .map(reserva -> (DetalleReservaLaboratorio) reserva)
-                .collect(Collectors.toList());
-    }
-
-    public void añadirReservaGlobal(DetalleReserva reserva)
-    {
-        reservasTotales.add(reserva);
-    }
-
-    public void eliminarReservaGlobal(DetalleReserva reserva)
-    {
-        reservasTotales.remove(reserva);
     }
 
     public boolean devolverEquipo(Equipo equipo, DetalleReserva reserva) {

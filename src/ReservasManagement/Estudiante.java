@@ -1,3 +1,5 @@
+package ReservasManagement;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -35,31 +37,30 @@ public class Estudiante extends Usuario {
         return reservas;
     }
 
-    public void añadirReservaEquipo(LocalDate fecha, Equipo equipo, int duracion) throws Exception {
+    public void añadirReservaEquipo(LocalDate fecha, Equipo equipo, int duracion, List<DetalleReservaEquipo> equipos) throws Exception {
         // Verificar si existe alguna reserva que se solape para el mismo equipo
-        boolean equipoOcupado = getAllReservasEquipo().stream()
+        boolean equipoOcupado = equipos.stream()
                 .filter(reserva -> reserva.getEquipo() == equipo)
                 .anyMatch(reserva -> hayConflictoFechas(fecha, duracion, reserva.getFecha(), reserva.getDuracion()));
 
         if (equipoOcupado) {
-            throw new Exception("Equipo ya ocupado");
+            throw new Exception("ReservasManagement.Equipo ya ocupado");
         }
 
         // Crear y añadir la nueva reserva
         DetalleReservaEquipo reserva = new DetalleReservaEquipo(fecha, this, equipo, duracion);
         reservas.add(reserva);
-        this.añadirReservaGlobal(reserva);
     }
 
     public void añadirReservaLaboratorio(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin,
-                                         String laboratorioReservado, int numeroOcupantes) throws Exception {
+                                         String laboratorioReservado, int numeroOcupantes, List<DetalleReservaLaboratorio> laboratorios) throws Exception {
         // Verificar número máximo de ocupantes
         if (numeroOcupantes > 5) {
             throw new Exception("El número de ocupantes no puede superar 5 personas");
         }
 
         // Verificar si existe alguna reserva que se solape para el mismo laboratorio
-        boolean laboratorioOcupado = getAllReservasLaboratorio().stream()
+        boolean laboratorioOcupado = laboratorios.stream()
                 .filter(reserva -> reserva.getLaboratorioReservado().equals(laboratorioReservado))
                 .anyMatch(reserva -> hayConflictoFechasYHoras(
                         fecha, horaInicio, horaFin,
@@ -74,13 +75,11 @@ public class Estudiante extends Usuario {
         DetalleReservaLaboratorio reserva = new DetalleReservaLaboratorio(
                 fecha, this, horaInicio, horaFin, laboratorioReservado, numeroOcupantes);
         reservas.add(reserva);
-        this.añadirReservaGlobal(reserva);
     }
 
     public void eliminarReserva(DetalleReserva reserva)
     {
         reservas.remove(reserva);
-        this.eliminarReservaGlobal(reserva);
     }
 
     private boolean hayConflictoFechasYHoras(
