@@ -2,6 +2,7 @@ package AppMain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ReservasManagement.*;
 
@@ -64,7 +65,7 @@ public class App {
         }
 
         assert tipoUsuario != null;
-        if (tipoUsuario.equals("ReservasManagement.Estudiante")) {
+        if (tipoUsuario.equals("Estudiante")) {
             Estudiante nuevoEstudiante = new Estudiante(cedula, nombre, correo, ciudad, clave, telefono, "Carrera", 1);
             estudiantes.add(nuevoEstudiante);
         } else {
@@ -79,17 +80,49 @@ public class App {
         // Validar credenciales en estudiantes
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getCorreo().equals(correo) && estudiante.getClave().equals(clave)) {
-                return estudiante;
+                return (Estudiante) estudiante;
             }
         }
         // Validar credenciales en administradores
         for (Administrador administrador : administradores) {
             if (administrador.getCorreo().equals(correo) && administrador.getClave().equals(clave)) {
-                return administrador;
+                return (Administrador) administrador;
             }
         }
 
         throw new Exception("Credecianles inválidas");
     }
 
+    public void agregarReserva(DetalleReserva reserva) {
+        reservas.add(reserva);
+    }
+
+    public void eliminarReserva(DetalleReserva reserva) {
+        reservas.remove(reserva);
+    }
+
+    public void agregarEquipo(Equipo equipo) {
+        equipos.add(equipo);
+    }
+
+    public Equipo buscarEquipoPorNombre(String nombre) {
+        return equipos.stream()
+                .filter(eq -> eq.getNombre().equals(nombre))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<DetalleReservaLaboratorio> getReservasLaboratorio() {
+        return reservas.stream()
+                .filter(r -> r instanceof DetalleReservaLaboratorio)
+                .map(r -> (DetalleReservaLaboratorio) r)
+                .collect(Collectors.toList());
+    }
+
+    public List<DetalleReservaEquipo> getReservasEquipo() {
+        return reservas.stream()
+                .filter(r -> r instanceof DetalleReservaEquipo)
+                .map(r -> (DetalleReservaEquipo) r)
+                .collect(Collectors.toList());
+    }
 }

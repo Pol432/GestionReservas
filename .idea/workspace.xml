@@ -4,20 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b5910f6-f6b9-478b-879f-59e37d6262c9" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/src/AppMain/App.java" afterDir="false" />
+    <list default="true" id="9b5910f6-f6b9-478b-879f-59e37d6262c9" name="Changes" comment="Created App class">
+      <change afterPath="$PROJECT_DIR$/src/AppMain/AdministradorPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/EstudiantePanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/GUIController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/LoginPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/RegistroPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservaEquipoPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservaLaboratorioPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservasTablaPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Administrador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DetalleReserva.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReserva.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DetalleReservaEquipo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReservaEquipo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DetalleReservaLaboratorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/DetalleReservaLaboratorio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Equipo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Equipo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EquipoMedicion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EquipoMicroprocesador.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/MainGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RegistroMantenimiento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/RegistroMantenimiento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppMain/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppMain/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/MainGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +105,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736977960991</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Created App class">
+      <option name="closed" value="true" />
+      <created>1736983209198</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1736983209198</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -123,6 +130,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="eewe" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="Created App class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created App class" />
   </component>
 </project>

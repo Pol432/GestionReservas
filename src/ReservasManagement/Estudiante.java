@@ -8,7 +8,7 @@ import java.util.List;
 public class Estudiante extends Usuario {
     private String carrera;
     private int semestre;
-    private static List<DetalleReserva> reservas;
+    private List<DetalleReserva> reservas;
 
     public Estudiante(String cedula, String nombre, String correo, String direccion, String clave, String telefono, String carrera, int semestre) {
         super(cedula, nombre, correo, direccion, clave, telefono);
@@ -33,33 +33,44 @@ public class Estudiante extends Usuario {
         this.semestre = semestre;
     }
 
-    public static List<DetalleReserva> getReservas() {
+    public List<DetalleReserva> getReservas() {
         return reservas;
     }
 
-    public void añadirReservaEquipo(LocalDate fecha, Equipo equipo, int duracion, List<DetalleReservaEquipo> equipos) throws Exception {
-        // Verificar si existe alguna reserva que se solape para el mismo equipo
+    public DetalleReservaEquipo añadirReservaEquipo(LocalDate fecha, Equipo equipo, int duracion, List<DetalleReservaEquipo> equipos) throws Exception {
+        // Verificar el límite de reservas de equipos
+        if (contarReservasEquipos() >= 5) {
+            throw new Exception("No puede realizar más de 5 reservas de equipos");
+        }
+
+        // Verificar si el equipo ya está ocupado
         boolean equipoOcupado = equipos.stream()
                 .filter(reserva -> reserva.getEquipo() == equipo)
                 .anyMatch(reserva -> hayConflictoFechas(fecha, duracion, reserva.getFecha(), reserva.getDuracion()));
 
         if (equipoOcupado) {
-            throw new Exception("ReservasManagement.Equipo ya ocupado");
+            throw new Exception("Equipo ya ocupado");
         }
 
         // Crear y añadir la nueva reserva
         DetalleReservaEquipo reserva = new DetalleReservaEquipo(fecha, this, equipo, duracion);
         reservas.add(reserva);
+        return reserva;
     }
 
-    public void añadirReservaLaboratorio(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin,
-                                         String laboratorioReservado, int numeroOcupantes, List<DetalleReservaLaboratorio> laboratorios) throws Exception {
+    public DetalleReservaLaboratorio añadirReservaLaboratorio(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin,
+                                                              String laboratorioReservado, int numeroOcupantes, List<DetalleReservaLaboratorio> laboratorios) throws Exception {
+        // Verificar el límite de reservas de laboratorios
+        if (contarReservasLaboratorios() >= 3) {
+            throw new Exception("No puede realizar más de 3 reservas de laboratorios");
+        }
+
         // Verificar número máximo de ocupantes
         if (numeroOcupantes > 5) {
             throw new Exception("El número de ocupantes no puede superar 5 personas");
         }
 
-        // Verificar si existe alguna reserva que se solape para el mismo laboratorio
+        // Verificar si el laboratorio ya está ocupado
         boolean laboratorioOcupado = laboratorios.stream()
                 .filter(reserva -> reserva.getLaboratorioReservado().equals(laboratorioReservado))
                 .anyMatch(reserva -> hayConflictoFechasYHoras(
@@ -75,11 +86,25 @@ public class Estudiante extends Usuario {
         DetalleReservaLaboratorio reserva = new DetalleReservaLaboratorio(
                 fecha, this, horaInicio, horaFin, laboratorioReservado, numeroOcupantes);
         reservas.add(reserva);
+        return reserva;
     }
 
-    public void eliminarReserva(DetalleReserva reserva)
-    {
+    public void eliminarReserva(DetalleReserva reserva) {
         reservas.remove(reserva);
+    }
+
+    // Método para contar las reservas de equipos realizadas por el estudiante
+    private long contarReservasEquipos() {
+        return reservas.stream()
+                .filter(reserva -> reserva instanceof DetalleReservaEquipo)
+                .count();
+    }
+
+    // Método para contar las reservas de laboratorios realizadas por el estudiante
+    private long contarReservasLaboratorios() {
+        return reservas.stream()
+                .filter(reserva -> reserva instanceof DetalleReservaLaboratorio)
+                .count();
     }
 
     private boolean hayConflictoFechasYHoras(
@@ -104,3 +129,4 @@ public class Estudiante extends Usuario {
                 (fecha2.isBefore(fin1) || fecha2.isEqual(fin1));
     }
 }
+
