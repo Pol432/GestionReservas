@@ -79,18 +79,20 @@ public class ReservasTablaPanel extends JPanel {
 
         try {
             int numeroReserva = (int) modeloReservas.getValueAt(filaSeleccionada, 0);
-            DetalleReserva reservaAEliminar = app.getReservas().stream()
+            DetalleReserva reservaAEliminar = App.getReservas().stream()
                     .filter(r -> r.getNumeroReserva() == numeroReserva)
                     .findFirst()
                     .orElseThrow(() -> new Exception("Reserva no encontrada"));
 
-            if (reservaAEliminar instanceof DetalleReservaEquipo) {
-                DetalleReservaEquipo reservaEquipo = (DetalleReservaEquipo) reservaAEliminar;
+            if (reservaAEliminar instanceof DetalleReservaEquipo reservaEquipo) {
                 reservaEquipo.getEquipo().setPrestado(false);
             }
 
+            Estudiante u1 = (Estudiante) reservaAEliminar.getUsuario();
+            u1.eliminarReserva(reservaAEliminar);
+
             app.eliminarReserva(reservaAEliminar);
-            actualizarTabla((Estudiante) reservaAEliminar.getUsuario());
+            actualizarTabla(u1);
             JOptionPane.showMessageDialog(this,
                     "Reserva eliminada con éxito",
                     "Éxito",

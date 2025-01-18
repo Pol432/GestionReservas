@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b5910f6-f6b9-478b-879f-59e37d6262c9" name="Changes" comment="Created App class">
-      <change afterPath="$PROJECT_DIR$/src/AppMain/AdministradorPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/EstudiantePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/GUIController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/LoginPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/RegistroPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservaEquipoPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservaLaboratorioPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppMain/ReservasTablaPanel.java" afterDir="false" />
+    <list default="true" id="9b5910f6-f6b9-478b-879f-59e37d6262c9" name="Changes" comment="Updated GUI for multiple Panel classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppMain/AdministradorPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/AdministradorPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppMain/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppMain/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/MainGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppMain/ReservaLaboratorioPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/ReservaLaboratorioPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppMain/ReservasTablaPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppMain/ReservasTablaPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ReservasManagement/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Administrador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReservasManagement/Estudiante.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +109,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736983209198</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Updated GUI for multiple Panel classes">
+      <option name="closed" value="true" />
+      <created>1736990122806</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1736990122806</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -131,6 +135,7 @@
     <MESSAGE value="eewe" />
     <MESSAGE value="." />
     <MESSAGE value="Created App class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created App class" />
+    <MESSAGE value="Updated GUI for multiple Panel classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated GUI for multiple Panel classes" />
   </component>
 </project>

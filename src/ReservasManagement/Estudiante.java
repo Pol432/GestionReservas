@@ -93,14 +93,14 @@ public class Estudiante extends Usuario {
         reservas.remove(reserva);
     }
 
-    // Método para contar las reservas de equipos realizadas por el estudiante
+    // Contar las reservas de equipos realizadas por el estudiante
     private long contarReservasEquipos() {
         return reservas.stream()
                 .filter(reserva -> reserva instanceof DetalleReservaEquipo)
                 .count();
     }
 
-    // Método para contar las reservas de laboratorios realizadas por el estudiante
+    // Contar las reservas de laboratorios realizadas por el estudiante
     private long contarReservasLaboratorios() {
         return reservas.stream()
                 .filter(reserva -> reserva instanceof DetalleReservaLaboratorio)

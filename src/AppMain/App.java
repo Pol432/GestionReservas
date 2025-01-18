@@ -1,6 +1,7 @@
 package AppMain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ public class App {
     private static List<Estudiante> estudiantes = new ArrayList<>();
     private static List<Administrador> administradores = new ArrayList<>();
     private static List<RegistroMantenimiento> historialMantenimientos = new ArrayList<>();
+    private static List<String> laboratorios = new ArrayList<>();
 
     public static List<Equipo> getEquipos() {
         return equipos;
@@ -31,6 +33,36 @@ public class App {
 
     public static List<RegistroMantenimiento> getHistorialMantenimientos() {
         return historialMantenimientos;
+    }
+
+    public static List<String> getLaboratorios() {
+        return laboratorios;
+    }
+
+    public static void inicializar() {
+        // Inicializar laboratorios
+        laboratorios.add("UPE | -321");
+        laboratorios.add("UPE | -320");
+        laboratorios.add("UPE | -319");
+
+        // Inicializar equipos
+        Date fechaActual = new Date();
+
+        Equipo e1 = new Equipo("Cautín", "Disponible", fechaActual);
+        e1.setCodigo("EQ001");
+        e1.setFechaMantenimientoPreventivo("2025-01-20");
+
+        Equipo e2 = new Equipo("Osciloscopio", "Disponible", fechaActual);
+        e2.setCodigo("EQ002");
+        e2.setFechaMantenimientoPreventivo("2025-01-22");
+
+        Equipo e3 = new Equipo("ESP32", "Disponible", fechaActual);
+        e3.setCodigo("EQ003");
+        e3.setFechaMantenimientoPreventivo("2025-01-25");
+
+        equipos.add(e1);
+        equipos.add(e2);
+        equipos.add(e3);
     }
 
 
@@ -101,8 +133,21 @@ public class App {
         reservas.remove(reserva);
     }
 
+    public void agregarLaboratorio(String lab) {
+        laboratorios.add(lab);
+    }
+
+    public void eliminarLaboratorio(String lab) {
+        laboratorios.remove(lab);
+    }
+
     public void agregarEquipo(Equipo equipo) {
         equipos.add(equipo);
+    }
+
+
+    public void eliminarEquipo(Equipo equipo) {
+        equipos.remove(equipo);
     }
 
     public Equipo buscarEquipoPorNombre(String nombre) {

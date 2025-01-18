@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-
 public class ReservaLaboratorioPanel extends JPanel {
     private App app;
     private ReservasTablaPanel tablaPanel;
@@ -35,9 +34,7 @@ public class ReservaLaboratorioPanel extends JPanel {
         setLayout(new GridLayout(0, 4, 10, 10));
 
         // Crear componentes
-        laboratorioComboBox = new JComboBox<>(new String[]{
-                "UPE | -320", "UPE | -321", "UPE | -319"
-        });
+        laboratorioComboBox = new JComboBox<>(App.getLaboratorios().toArray(new String[0]));
 
         fechaChooser = new JDateChooser();
         fechaChooser.setDateFormatString("dd/MM/yyyy");
@@ -98,10 +95,7 @@ public class ReservaLaboratorioPanel extends JPanel {
 
             DetalleReservaLaboratorio reserva = estudiante.añadirReservaLaboratorio(
                     fecha, horaInicio, horaFin, laboratorio, ocupantes,
-                    app.getReservas().stream()
-                            .filter(r -> r instanceof DetalleReservaLaboratorio)
-                            .map(r -> (DetalleReservaLaboratorio) r)
-                            .toList()
+                    app.getReservasLaboratorio()
             );
 
             app.agregarReserva(reserva);

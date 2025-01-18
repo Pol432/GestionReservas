@@ -82,14 +82,6 @@ public class AdministradorPanel extends JPanel {
         }
     }
 
-    private void actualizarComboBoxEquipos() {
-        equipoComboBox.removeAllItems();
-        List<Equipo> equipos = app.getEquipos();
-        equipos.stream()
-                .filter(eq -> eq.requiereMantenimientoCorrectivo() || eq.requiereMantenimientoPreventivo())
-                .forEach(eq -> equipoComboBox.addItem(eq.getNombre()));
-    }
-
     private void realizarMantenimiento(String tipoMantenimiento) {
         String equipoSeleccionado = (String) equipoComboBox.getSelectedItem();
         if (equipoSeleccionado == null) {
@@ -98,38 +90,40 @@ public class AdministradorPanel extends JPanel {
         }
 
         String responsable = JOptionPane.showInputDialog(this, "Ingrese el nombre del responsable:");
-        if (responsable == null || responsable.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Responsable no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         JDateChooser dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("dd/MM/yyyy");
-        int resultado = JOptionPane.showConfirmDialog(this, dateChooser, "Seleccione la fecha", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int resultado = JOptionPane.showConfirmDialog(this, dateChooser, "Seleccione la fecha",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        if (resultado != JOptionPane.OK_OPTION || dateChooser.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Fecha no seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        if (resultado == JOptionPane.OK_OPTION && dateChooser.getDate() != null) {
+            LocalDate fechaMantenimiento = dateChooser.getDate().toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Equipo equipo = app.buscarEquipoPorNombre(equipoSeleccionado);
+
+            try {
+                administrador.realizarMantenimiento(
+                        equipo,
+                        tipoMantenimiento,
+                        fechaMantenimiento.toString(),
+                        responsable,
+                        app.getHistorialMantenimientos()
+                );
+
+                JOptionPane.showMessageDialog(this,
+                        "Mantenimiento " + tipoMantenimiento + " realizado exitosamente.");
+                actualizarTablaEquipos();
+                actualizarComboBoxEquipos();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
 
-        Date fechaSeleccionada = dateChooser.getDate();
-        LocalDate fechaMantenimiento = fechaSeleccionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        Equipo equipo = app.buscarEquipoPorNombre(equipoSeleccionado);
-        if (equipo == null) {
-            JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        try {
-            administrador.realizarMantenimiento(equipo, tipoMantenimiento, fechaMantenimiento.toString());
-            app.getHistorialMantenimientos().add(new RegistroMantenimiento(equipoSeleccionado, tipoMantenimiento, fechaMantenimiento.toString(), responsable));
-            JOptionPane.showMessageDialog(this, "Mantenimiento " + tipoMantenimiento + " realizado exitosamente.");
-            actualizarTablaEquipos();
-            actualizarComboBoxEquipos();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    private void actualizarComboBoxEquipos() {
+        equipoComboBox.removeAllItems();
+        List<Equipo> equiposParaMantenimiento = administrador.obtenerEquiposParaMantenimiento(App.getEquipos());
+        equiposParaMantenimiento.forEach(eq -> equipoComboBox.addItem(eq.getNombre()));
     }
 
     private void mostrarHistorial() {
@@ -139,7 +133,7 @@ public class AdministradorPanel extends JPanel {
         String[] columnas = {"Equipo", "Tipo", "Fecha", "Responsable"};
         DefaultTableModel model = new DefaultTableModel(columnas, 0);
 
-        for (RegistroMantenimiento registro : app.getHistorialMantenimientos()) {
+        for (RegistroMantenimiento registro : App.getHistorialMantenimientos()) {
             model.addRow(new Object[]{registro.getEquipo(), registro.getTipoMantenimiento(), registro.getFecha(), registro.getResponsable()});
         }
 
