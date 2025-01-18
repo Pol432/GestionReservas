@@ -1,14 +1,22 @@
-public class DetalleReserva {
-    private String horario;
+package ReservasManagement;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class DetalleReservaLaboratorio extends DetalleReserva{
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
     private String laboratorioReservado; // Puede ser "Electrónica", "Automatización" o "Robótica"
     private int numeroOcupantes;
     private static int reservasElectronica = 0;
     private static int reservasAutomatizacion = 0;
     private static int reservasRobotica = 0;
 
-    // Constructor
-    public DetalleReserva(String horario, String laboratorioReservado, int numeroOcupantes) {
-        this.horario = horario;
+    public DetalleReservaLaboratorio(LocalDate fecha, Usuario usuario, LocalTime horaInicio, LocalTime horaFin,
+                          String laboratorioReservado, int numeroOcupantes) {
+        super(fecha, usuario);
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
         this.laboratorioReservado = laboratorioReservado;
         this.numeroOcupantes = numeroOcupantes;
         registrarReserva(laboratorioReservado);
@@ -32,7 +40,6 @@ public class DetalleReserva {
         }
     }
 
-    // Métodos para obtener el número de reservas por laboratorio
     public static int getReservasElectronica() {
         return reservasElectronica;
     }
@@ -45,9 +52,12 @@ public class DetalleReserva {
         return reservasRobotica;
     }
 
-    // Getters
-    public String getHorario() {
-        return horario;
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public LocalTime getHoraFin() {
+        return horaFin;
     }
 
     public String getLaboratorioReservado() {
@@ -58,10 +68,27 @@ public class DetalleReserva {
         return numeroOcupantes;
     }
 
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public void setHoraFin(LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public void setLaboratorioReservado(String laboratorioReservado) {
+        this.laboratorioReservado = laboratorioReservado;
+    }
+
+    public void setNumeroOcupantes(int numeroOcupantes) {
+        this.numeroOcupantes = numeroOcupantes;
+    }
+
     @Override
     public String toString() {
-        return "DetalleReserva{" +
-                "horario='" + horario + '\'' +
+        return "ReservasManagement.DetalleReserva{" +
+                ", horaInicio=" + horaInicio +
+                ", horaFin=" + horaFin +
                 ", laboratorioReservado='" + laboratorioReservado + '\'' +
                 ", numeroOcupantes=" + numeroOcupantes +
                 '}';
